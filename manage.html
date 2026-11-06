@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project manager — Jabir Hussain</title><link rel="icon" href="assets/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="manage.css"></head>
+<body>
+<header class="bar"><a href="index.html" class="back">← Portfolio</a><h1>Project manager</h1><button id="theme" class="ghost" aria-label="Toggle light/dark theme">◐</button><div id="acct"></div></header>
+<main>
+<section id="setup" class="card" hidden><h2>GitHub isn’t connected to a backend yet</h2><p id="setupMsg"></p>
+<ol><li>Create a GitHub OAuth App (Settings → Developer settings) with callback URL <code id="cb"></code>.</li><li>Run <code>GITHUB_CLIENT_ID=… GITHUB_CLIENT_SECRET=… node server/server.js</code></li><li>Open <code id="home"></code>/manage.html from that server.</li></ol></section>
+<section id="connect" class="card" hidden><h2>Connect GitHub</h2><p>Sign in with GitHub to publish files to a repository. Your token stays on the server and never reaches this page.</p><a class="gh primary" href="/auth/login"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Continue with GitHub</a></section>
+<form id="f" class="grid" hidden novalidate>
+ <section class="card"><h2>1 · Project files</h2>
+  <div id="drop" class="drop" tabindex="0" role="button" aria-label="Add files"><b>Drag &amp; drop files here</b><span>PNG, JPG, SVG, WebP, PDF or ZIP · up to 25 MB each</span><label class="gh">Choose files<input id="pick" type="file" multiple accept=".png,.jpg,.jpeg,.svg,.webp,.pdf,.zip" hidden></label></div>
+  <ul id="files" class="files"></ul></section>
+ <section class="card"><h2>2 · Details</h2>
+  <label>Project title<input id="title" required maxlength="80"></label>
+  <label>Description<textarea id="desc" rows="3" maxlength="400"></textarea></label>
+  <label>Category<select id="cat"><option>Logo design</option><option>Poster design</option><option>UI / UX</option><option>Branding</option><option>Motion</option><option>Other</option></select></label>
+  <label>Project repository URL <small>(optional, shown on the project card)</small><input id="url" type="url" placeholder="https://github.com/you/repo"></label></section>
+ <section class="card"><h2>3 · Publish to GitHub</h2>
+  <label>Repository<select id="repo"></select></label>
+  <div id="newrepo" hidden><label>New repository name<input id="rname" placeholder="my-portfolio-projects"></label><label class="chk"><input id="rpriv" type="checkbox"> Private repository</label></div>
+  <label>Branch<select id="branch"></select></label>
+  <label>Commit message<input id="msg" maxlength="200" placeholder="Add project: …"></label>
+  <button id="pub" class="gh primary" type="submit" disabled>Publish Project</button><div id="prog" class="bar2" hidden><i></i></div></section>
+</form>
+<section id="list" class="card" hidden><h2>Published projects <small id="where"></small></h2><div id="projects" class="plist"></div></section>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="pv" class="pv" hidden><button class="ghost" id="pvx" aria-label="Close preview">✕</button><div id="pvb"></div></div>
+<script src="manage.js"></script></body></html>

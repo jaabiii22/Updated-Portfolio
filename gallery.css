@@ -1,0 +1,106 @@
+/*@P-CSS*/
+/* ===== Posters: JS masonry (columns are built in gallery.js from real aspect ratios) ===== */
+.pmas{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px;align-items:start}
+.pmas[data-cols="2"]{grid-template-columns:repeat(2,1fr)}.pmas[data-cols="1"]{grid-template-columns:1fr}
+.pcol{display:flex;flex-direction:column;gap:24px;min-width:0}
+.pmas[data-cols="3"] .pcol:nth-child(2){padding-top:56px}
+.pm{margin:0;position:relative;border-radius:20px;cursor:pointer;outline-offset:4px;transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .3s ease-out,opacity 1s,box-shadow .4s;box-shadow:0 14px 36px #0f172a1a;background:#e0e7ff}
+.pm.rv.in{transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+.pm:hover,.pm:focus-visible{box-shadow:0 30px 70px #2447ff40}
+.pm:focus-visible{outline:3px solid var(--blue)}
+.pimg{border-radius:20px;overflow:hidden;position:relative;line-height:0;background:#e0e7ff}
+.pimg img{width:100%;height:100%;display:block;object-fit:cover;transition:transform 1s cubic-bezier(.2,.7,.2,1),filter .5s}
+.pm:hover img,.pm:focus-visible img{transform:scale(1.05)}
+.pimg::before{content:"";position:absolute;inset:0;z-index:2;background:radial-gradient(280px circle at var(--x,50%) var(--y,50%),#ffffff45,transparent 70%);opacity:0;transition:opacity .3s;pointer-events:none}
+.pimg::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(110deg,transparent 35%,#ffffff60 50%,transparent 65%);transform:translateX(-130%);transition:transform 1s;pointer-events:none}
+.pm:hover .pimg::before{opacity:1}.pm:hover .pimg::after{transform:translateX(130%)}
+.pm figcaption{position:absolute;left:12px;right:12px;bottom:12px;z-index:3;display:grid;gap:3px;padding:14px 56px 14px 16px;border-radius:14px;background:#fffffff2;backdrop-filter:blur(8px);transform:translateY(18px) translateZ(40px);opacity:0;transition:opacity .35s,transform .45s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.pm:hover figcaption,.pm:focus-visible figcaption{opacity:1;transform:translateY(0) translateZ(40px)}
+.pm figcaption b{font:800 15px var(--f)}.pm figcaption i{font-style:normal;font-size:12px;color:var(--mut)}
+.pm figcaption p{font-size:12.5px;line-height:1.45;color:#334155;margin-top:3px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pm figcaption em{position:absolute;right:14px;top:14px;font-style:normal;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:14px}
+/* touch: caption sits under the poster so it never covers the artwork */
+@media(hover:none){.pm{background:transparent;box-shadow:none}.pm figcaption{position:static;opacity:1;transform:none;background:transparent;backdrop-filter:none;padding:12px 4px 4px;pointer-events:auto}
+.pm figcaption p{-webkit-line-clamp:unset;overflow:visible}.pm figcaption em{display:none}.pimg{box-shadow:0 14px 36px #0f172a26}}
+@media(max-width:860px){.pmas,.pcol{gap:18px}}
+
+/* ===== Lightbox ===== */
+.lb{position:fixed;inset:0;z-index:90;visibility:hidden;pointer-events:none}.lb.open{visibility:visible;pointer-events:auto}
+.lbbg{position:absolute;inset:0;background:#0f172af0;backdrop-filter:blur(14px);opacity:0;transition:opacity .5s}.lb.open .lbbg{opacity:1}
+.lbimg{position:fixed;object-fit:cover;box-shadow:0 40px 100px #0009;z-index:2;cursor:zoom-out}
+.lbcap{position:fixed;left:50%;bottom:18px;width:min(680px,calc(100vw - 150px));margin-left:calc(min(680px,calc(100vw - 150px))/-2);text-align:center;color:#fff;z-index:3;opacity:0;transform:translateY(14px);transition:opacity .5s .25s,transform .5s .25s;display:grid;gap:3px;justify-items:center}
+.lb.open .lbcap{opacity:1;transform:none}
+.lbcap b{font:800 20px var(--f)}
+.lbcap .lbcat{font-size:12px;font-weight:600;padding:3px 11px;border-radius:99px;background:#ffffff22;margin:2px 0}
+.lbcap p{font-size:13px;line-height:1.5;opacity:.85;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lbcap i{font-style:normal;font-size:12px;opacity:.6}
+.lb button{position:fixed;z-index:4;width:52px;height:52px;border-radius:50%;border:1px solid #ffffff44;background:#ffffff1a;color:#fff;font:500 22px var(--f);display:grid;place-items:center;opacity:0;transition:opacity .5s .2s,background .3s,transform .3s;backdrop-filter:blur(8px);cursor:pointer}
+.lb.open button{opacity:1}.lb button:hover,.lb button:focus-visible{background:var(--blue);transform:scale(1.1)}
+.lb button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.lbx{top:18px;right:18px}.lbp{left:22px;top:50%;margin-top:-26px}.lbn{right:22px;top:50%;margin-top:-26px}
+.lbc{position:fixed;top:30px;left:28px;z-index:3;color:#fff;font:600 13px var(--f);letter-spacing:.2em;opacity:.7}
+.pimg.lift{opacity:0}
+.lb.closing .lbbg{opacity:0;transition:opacity .5s}
+.lb.closing .lbcap,.lb.closing button{opacity:0;transform:none;transition:opacity .25s;transition-delay:0s}
+@media(max-width:700px){
+ .lb button{width:44px;height:44px;font-size:19px}.lbx{top:10px;right:10px}.lbc{top:22px;left:18px}
+ .lbp,.lbn{top:auto;bottom:34px;margin:0}.lbp{left:12px}.lbn{right:12px}
+ .lbcap{width:calc(100vw - 120px);margin-left:calc((100vw - 120px)/-2);bottom:14px}.lbcap b{font-size:17px}.lbcap p{font-size:12px}}
+@media(max-height:520px){.lbcap p{display:none}}
+
+/*@/P-CSS*/
+/*@L-CSS*/
+/* ===== Logos: 3D flip cards ===== */
+.lggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:24px;margin-top:56px}
+.lg{height:410px;cursor:pointer;outline:none;transition:opacity 1s,transform 1s cubic-bezier(.2,.7,.2,1)}
+.lgt{width:100%;height:100%;perspective:1200px;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .3s ease-out}
+.lgi{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+@media(hover:hover){.lg:hover .lgi{transform:rotateY(180deg)}}
+.lg:focus-visible .lgi,.lg.flip .lgi{transform:rotateY(180deg)}
+.lg:focus-visible .lf,.lg:focus-visible .lk{box-shadow:0 0 0 3px var(--blue)}
+.lf,.lk{position:absolute;inset:0;border-radius:26px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+/* front: neutral white so every logo keeps its exact colours and transparency */
+.lf{background:#fff;border:1px solid var(--line);box-shadow:0 12px 34px #0f172a12;transform:rotateY(0deg)}
+.lf::before{content:"";position:absolute;left:50%;top:44%;width:74%;aspect-ratio:1;margin:-37% 0 0 -37%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c) 10%,transparent),transparent 70%)}
+.lfm{position:absolute;inset:56px 32px 100px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);place-items:center}
+.lfm img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;animation:lfl 5s ease-in-out infinite}
+.lfc{position:absolute;left:0;right:0;bottom:24px;display:grid;gap:4px;text-align:center}
+.lfc b{font:800 15px var(--f);letter-spacing:.2em;color:var(--ink)}.lfc span{font-size:12.5px;color:var(--mut)}
+.hint{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:16px;color:var(--mut);background:#0f172a0d;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.lg:hover .hint{transform:rotate(180deg)}
+@keyframes lfl{50%{transform:translateY(-5px) scale(1.02)}}
+/* back: brand-tinted dark panel with the design notes */
+.lk{transform:rotateY(180deg);background:linear-gradient(155deg,color-mix(in srgb,var(--c) 62%,#0b1224),#0b1224 90%);color:#fff;padding:22px 24px;display:flex;flex-direction:column;gap:12px;overflow:auto;scrollbar-width:thin}
+.lkh{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lkh h4{font:800 20px var(--f);letter-spacing:.05em}
+.lkh span{font:600 11px var(--f);padding:4px 10px;border-radius:99px;background:#ffffff26;white-space:nowrap}
+.lk dl{display:grid;gap:11px;margin:0}
+.lk dt{font:600 11.5px var(--f);color:#ffffffb8;margin-bottom:2px}
+.lk dd{margin:0;font-size:13px;line-height:1.48;color:#fffffff0}
+.lk .two2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sws{display:flex;flex-wrap:wrap;gap:6px 10px}
+.sw{display:inline-flex;align-items:center;gap:6px;font:600 11.5px var(--f);letter-spacing:.02em}
+.sw i{width:18px;height:18px;border-radius:50%;box-shadow:0 0 0 2px #ffffff80;flex:none}
+@media(max-width:520px){.lg{height:480px}.lk{padding:20px}.lk .two2{grid-template-columns:1fr;gap:11px}}
+@media(max-width:1000px) and (min-width:521px){.lg{height:440px}}
+/*@/L-CSS*/
+
+/* ---- Contact editorial panel ---- */
+.cbox{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,5vw,72px);align-items:center}
+.cbox .huge{font-size:clamp(34px,5vw,76px)}
+.cx{position:relative;padding-left:clamp(20px,3vw,44px);border-left:1px solid #ffffff2b}
+.cx-dot{position:absolute;left:-5px;top:4px;width:9px;height:9px;border-radius:50%;background:#7ea0ff;box-shadow:0 0 0 0 #7ea0ffaa,0 0 18px #4d73ff;animation:cxp 2.6s ease-out infinite}
+@keyframes cxp{70%,100%{box-shadow:0 0 0 14px #7ea0ff00,0 0 18px #4d73ff}}
+.cx-k{font:600 12px var(--f);letter-spacing:.28em;text-transform:uppercase;color:#a5b4fc;margin-bottom:18px}
+.cx-h{font:800 clamp(24px,2.7vw,40px)/1.08 var(--f);letter-spacing:-.025em;color:#fff;transition:letter-spacing .5s}
+.cx-h em{font:italic 700 1.06em 'Playfair Display',serif;letter-spacing:0;color:#a5b4fc}
+.cbox:hover .cx-h{letter-spacing:-.015em}
+.cx-s{margin-top:20px;max-width:380px;color:#cbd5e1;line-height:1.65;font-size:15px}
+@media(max-width:900px){.cbox{grid-template-columns:1fr}.cx{border-left:0;border-top:1px solid #ffffff2b;padding:34px 0 0}.cx-dot{left:0;top:-5px}}
+@media(prefers-reduced-motion:reduce){.cx-dot{animation:none}}
+/* ---- Closing footer ---- */
+.ft{padding:90px 24px 70px;max-width:860px;margin:0 auto}
+.ft-rule{display:block;width:48px;height:1px;background:var(--blue);margin:0 auto 34px;transition:width .6s}
+.ft:hover .ft-rule{width:120px}
+.ft-q{font:italic 700 clamp(22px,3.4vw,38px)/1.3 'Playfair Display',serif;color:var(--ink);letter-spacing:.01em}
+.ft-s{margin-top:26px;font:500 12px var(--f);letter-spacing:.26em;text-transform:uppercase;color:var(--mut)}

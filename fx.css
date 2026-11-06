@@ -1,0 +1,32 @@
+/* ===== Scroll marquee (velocity-reactive, 2 rows) ===== */
+.vm{position:relative;overflow:hidden;display:grid;gap:20px;padding:38px 0;background:linear-gradient(110deg,#0f172a,#1e1b4b 55%,#1e3a8a);border-block:1px solid #ffffff14;--mx:50%;--my:50%}
+.vm::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(460px circle at var(--mx) var(--my),#3b5bff66,transparent 70%),radial-gradient(#ffffff14 1px,transparent 1px);background-size:auto,28px 28px}
+.vm::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;background:linear-gradient(90deg,#0f172a,transparent 11%,transparent 89%,#0f172a)}
+.vm-row{display:flex;will-change:transform;position:relative;z-index:2}
+.vm-track{display:flex;gap:46px;width:max-content;align-items:center;will-change:transform}
+.vi{display:inline-flex;align-items:center;gap:18px;white-space:nowrap;font:800 clamp(36px,5.2vw,72px)/1.1 var(--f);letter-spacing:-.04em;color:#fff;transition:transform .4s cubic-bezier(.2,.8,.2,1),filter .4s,color .3s}
+.vi svg{width:.6em;height:.6em;stroke:#a5b4fc;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;transition:transform .6s cubic-bezier(.2,.8,.2,1),stroke .3s}
+.vi.o{color:transparent;-webkit-text-stroke:1.5px #c7d2fecc}
+.vi.g{background:linear-gradient(90deg,#60a5fa,#a78bfa 60%,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.vi:hover{transform:scale(1.05);filter:drop-shadow(0 0 24px #6366f1bb)}.vi:hover svg{transform:rotate(90deg) scale(1.2);stroke:#fff}.vi.o:hover{color:#fff;-webkit-text-stroke-color:#fff}
+.vc{display:inline-flex;align-items:center;gap:10px;padding:12px 26px;border-radius:99px;white-space:nowrap;font:600 17px var(--f);color:#e0e7ff;background:#ffffff12;border:1px solid #ffffff26;backdrop-filter:blur(6px);transition:transform .35s cubic-bezier(.2,.8,.2,1),background .3s,color .3s,box-shadow .3s}
+.vc i{width:10px;height:10px;border-radius:50%;background:var(--d,#818cf8);box-shadow:0 0 12px var(--d,#818cf8)}
+.vc:hover{background:#fff;color:#0f172a;transform:translateY(-5px) scale(1.04);box-shadow:0 14px 30px #00000055}
+/* ===== Scroll progress, scrollspy, back-to-top, ripple ===== */
+.sp{position:fixed;top:0;left:0;width:100%;height:3px;z-index:60;transform-origin:left;transform:scaleX(var(--sp,0));background:linear-gradient(90deg,#2447ff,#7c3aed,#ec4899)}
+.nav nav a.act:not(.talk){color:var(--ink)}.nav nav a.act:not(.talk)::after{transform:scaleX(1)}
+.btt{position:fixed;right:24px;bottom:24px;width:54px;height:54px;border-radius:50%;border:0;background:#fff;box-shadow:0 10px 30px #0f172a26;z-index:55;display:grid;place-items:center;opacity:0;transform:translateY(20px) scale(.8);pointer-events:none;transition:opacity .4s,transform .4s cubic-bezier(.2,.8,.2,1)}
+.btt.show{opacity:1;transform:none;pointer-events:auto}.btt:hover{transform:translateY(-4px) scale(1.06)}
+.btt svg{position:absolute;inset:0;transform:rotate(-90deg)}.btt circle{fill:none;stroke-width:3}.btt .tr{stroke:#e2e8f0}.btt .pg{stroke:var(--blue);stroke-linecap:round;stroke-dasharray:138.2;stroke-dashoffset:calc(138.2 - 138.2*var(--sp,0))}
+.btt b{font:700 18px var(--f);color:var(--ink);position:relative}
+.rp{position:fixed;width:12px;height:12px;margin:-6px;border-radius:50%;border:2px solid var(--blue);pointer-events:none;z-index:98;animation:rp .7s ease-out forwards}
+@keyframes rp{to{transform:scale(7);opacity:0}}
+/* ===== Floating UI/UX doodles that drift with scroll ===== */
+.dd{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.dd svg{position:absolute;top:0;color:#2447ff;opacity:.13;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;will-change:transform}
+/* ===== Pen-stroke underline under headings ===== */
+.pen{display:block;width:min(300px,55%);height:14px;margin-top:12px;overflow:visible}
+.pen path{fill:none;stroke:var(--blue);stroke-width:4;stroke-linecap:round;stroke-dasharray:330;stroke-dashoffset:330;transition:stroke-dashoffset 1.3s .5s cubic-bezier(.2,.7,.2,1)}
+.huge+.pen path{stroke:#a5b4fc}.big.in+.pen path,.huge.in+.pen path{stroke-dashoffset:0}
+@media(max-width:700px){.dd{display:none}.btt{right:16px;bottom:16px}}
+@media(prefers-reduced-motion:reduce){.pen path{stroke-dashoffset:0}.rp{display:none}}
